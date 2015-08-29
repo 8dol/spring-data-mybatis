@@ -5,7 +5,7 @@
 
     <groupId>com.edol.data</groupId>
     <artifactId>spring-data-mybatis</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-data-mybatis</name>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
-            <version>1.2.3-1</version>
+            <version>1.2.3-2</version>
             <optional>true</optional>
         </dependency>
 
@@ -75,5 +75,12 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://nexus.dev.8dol.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
 </project>
 

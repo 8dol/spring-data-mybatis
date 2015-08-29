@@ -1,12 +1,10 @@
 package com.edol.data.factory;
 
-import com.edol.data.type.DBEnum;
-import com.edol.data.type.DBEnumTypeHandler;
 import com.edol.testdomain.TTEnum;
 import org.apache.ibatis.session.Configuration;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by mind on 8/27/15.
@@ -17,11 +15,10 @@ public class EdolSqlSessionFactoryTest {
     public void testRegister() throws Exception {
         EdolSqlSessionFactory ssf = new EdolSqlSessionFactory();
 
-        ssf.setScanPackages("com.edol.testdomain");
-        ssf.addInterfaceTypeHandler(DBEnum.class, DBEnumTypeHandler.class);
+        ssf.addScanInterfacePackages("com.edol.testdomain");
 
         Configuration configuration = new Configuration();
-        ssf.configOtherTypeHandler(configuration);
+        ssf.configBeforeXmlBuilderParse(configuration);
 
         assertTrue(configuration.getTypeHandlerRegistry().hasTypeHandler(TTEnum.class));
     }

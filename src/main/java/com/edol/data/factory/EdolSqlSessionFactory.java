@@ -1,5 +1,8 @@
 package com.edol.data.factory;
 
+import com.edol.data.interceptor.PageableAndSortInterceptor;
+import com.edol.data.type.DBEnum;
+import com.edol.data.type.DBEnumTypeHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.session.Configuration;
@@ -17,17 +20,25 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class EdolSqlSessionFactory extends SqlSessionFactoryBean {
 
-    private Map<Class, Class> interfaceTypeHandlerMap = new HashMap<>();
+    private Map<Class, Class> interfaceTypeHandlerMap = new HashMap<Class, Class>() {{
+        put(DBEnum.class, DBEnumTypeHandler.class);
+    }};
 
     private List<String> scanPackages = Collections.emptyList();
 
     @Override
-    protected void configOtherTypeHandler(Configuration config) {
+    protected void configBeforeXmlBuilderParse(Configuration config) {
+        // add interceptor
+        config.addInterceptor(new PageableAndSortInterceptor());
+
+        // add type handler
         TypeHandlerRegistry typeHandlerRegistry = config.getTypeHandlerRegistry();
+
+        typeHandlerRegistry.register("com.edol.data.type");
 
         scanPackages.forEach(pack -> {
             interfaceTypeHandlerMap.forEach((k, v) -> {
-                ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<Class<?>>();
+                ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
                 resolverUtil.find(new ResolverUtil.IsA(k), pack);
 
                 log.debug("Find {}, for {}, in {}.", k, v, pack);
@@ -43,9 +54,9 @@ public class EdolSqlSessionFactory extends SqlSessionFactoryBean {
         });
     }
 
-    public void setScanPackages(String packages) {
+    public void addScanInterfacePackages(String packages) {
         if (packages != null && packages.trim().length() > 0) {
-            scanPackages = Arrays.asList(packages.split(";")).stream().map(x -> x.trim()).filter(y -> y.length() > 0).collect(toList());
+            scanPackages.addAll(Arrays.asList(packages.split(";")).stream().map(x -> x.trim()).filter(y -> y.length() > 0).collect(toList()));
         }
     }
 
