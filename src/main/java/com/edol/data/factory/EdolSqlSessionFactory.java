@@ -24,7 +24,7 @@ public class EdolSqlSessionFactory extends SqlSessionFactoryBean {
         put(DBEnum.class, DBEnumTypeHandler.class);
     }};
 
-    private List<String> scanPackages = Collections.emptyList();
+    private List<String> scanPackages = new ArrayList<>();
 
     @Override
     protected void configBeforeXmlBuilderParse(Configuration config) {

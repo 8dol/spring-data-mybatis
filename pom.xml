@@ -5,7 +5,7 @@
 
     <groupId>com.edol.data</groupId>
     <artifactId>spring-data-mybatis</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
 
     <name>spring-data-mybatis</name>
