@@ -1,5 +1,6 @@
 package com.edol.data.type;
 
+import com.edol.data.exception.DBEnumConvertRuntimeException;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 /**
  * Created by mind on 7/17/15.
  */
-
 public class DBEnumTypeHandler extends BaseTypeHandler<DBEnum> {
     private Class<DBEnum> type;
 
@@ -45,13 +45,16 @@ public class DBEnumTypeHandler extends BaseTypeHandler<DBEnum> {
         ps.setInt(i, enumObj.getIntValue());
     }
 
-    private DBEnum convert(int status) {
+    private DBEnum convert(int status) throws SQLException {
         DBEnum[] objs = type.getEnumConstants();
         for (DBEnum em : objs) {
             if (em.getIntValue() == status) {
                 return em;
             }
         }
-        return null;
+        if (status == 0) {
+            return null;
+        }
+        throw new DBEnumConvertRuntimeException(new StringBuffer(type.getSimpleName()).append(": The value ").append(status).append(" is not mapper ENUM").toString());
     }
 }
