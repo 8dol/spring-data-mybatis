@@ -45,7 +45,7 @@ public class DBEnumTypeHandler extends BaseTypeHandler<DBEnum> {
         ps.setInt(i, enumObj.getIntValue());
     }
 
-    private DBEnum convert(int status) throws SQLException {
+    private DBEnum convert(int status) {
         DBEnum[] objs = type.getEnumConstants();
         for (DBEnum em : objs) {
             if (em.getIntValue() == status) {
