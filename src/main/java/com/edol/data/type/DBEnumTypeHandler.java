@@ -45,13 +45,13 @@ public class DBEnumTypeHandler extends BaseTypeHandler<DBEnum> {
         ps.setInt(i, enumObj.getIntValue());
     }
 
-    private DBEnum convert(int status) {
+    private DBEnum convert(int status) throws SQLException {
         DBEnum[] objs = type.getEnumConstants();
         for (DBEnum em : objs) {
             if (em.getIntValue() == status) {
                 return em;
             }
         }
-        return null;
+        throw new SQLException(new StringBuffer(type.getSimpleName()).append(":").append(status).append(" is not exist").toString());
     }
 }
