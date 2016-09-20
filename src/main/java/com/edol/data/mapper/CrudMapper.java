@@ -49,4 +49,12 @@ public interface CrudMapper<T, PK extends Serializable> {
      * @return 返回影响的行数，失败返回0
      */
     int updateById(T record);
+
+    /**
+     * 批量插入
+     *
+     * @param list
+     * @return 返回影响的行数，成功返回 >= 1
+     */
+    int batchInsert(List<T> list);
 }
